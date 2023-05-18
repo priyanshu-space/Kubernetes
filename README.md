@@ -117,12 +117,23 @@ $ docker logs <container-id>
   Certificates API
 #######################
   
+############
  Admin user
- ----------
+############
  
 whenever a new user want to access k8s cluster, they generates a key and csr and send csr to admin, then admin sends this csr to CA server for signing it. then signed CSR will be returned to user.     
 
-CA Server :- CA is just a pair of key and certificate files we have generated whoever gains access to these pairs of files can sign any certificate for the k8s env. , these files needs to be place them on a server that is fully secure and we call that server as CA server. As of now certificates are placed on master node itself, so that is our CA server.
+CA Server :- CA is just a pair of key and certificate files we have generated whoever gains access to these pairs of files can sign any certificate for the k8s env. , these files needs to be place on a server that is fully secure and we call that server as CA server. As of now certificates are placed on master node itself, so that is our CA server.
+ 
+Kubernetes has its built-in certificates API, with this API you can send a certiifcate signing request directly to k8s through an API call. then CertificateSigningRequest object will be created instead of logging into server, then these requests can be reviewed and approved easily by kubectl cmds.
+ 
+ Steps :-
+
+1. openssl genrsa -out jane.key 2048
+
+2. openssl req -new -key jane.key -subj "/CN=jane" -out jane.csr
+ 
+3. Admin takes above key and creates certificate signing request object.
   
 
 
